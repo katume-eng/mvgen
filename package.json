@@ -1,0 +1,25 @@
+{
+  "name": "mvgen",
+  "version": "1.0.0",
+  "description": "this is a software making mv automatically, not with AI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests configured\"",
+    "dev": "vite",
+    "build": "vite build",
+    "generate:events": "tsx scripts/generateEvents.ts --bpm 120 --duration 30 --intervalBeats 1 --strength 0.08 --out public/events.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "p5": "^2.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "@types/p5": "^1.7.7",
+    "tsx": "^4.22.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.13"
+  }
+}
