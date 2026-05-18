@@ -25,5 +25,10 @@ export const loadEvents = async (path: string): Promise<AnimationEvent[]> => {
     throw new Error("Invalid events format: expected an array");
   }
 
-  return data.filter(isValidAnimationEvent);
+  const invalidIndex = data.findIndex((event) => !isValidAnimationEvent(event));
+  if (invalidIndex !== -1) {
+    throw new Error(`Invalid event at index ${invalidIndex}`);
+  }
+
+  return data;
 };
