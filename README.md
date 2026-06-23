@@ -21,13 +21,45 @@ Then open the local Vite URL.
 
 ## Event format
 
+Events are defined in `public/events.json` (or generated via the CLI for legacy zoom).
+
+### New keyframe format (recommended)
 ```ts
 type AnimationEvent = {
-  type: "zoom" | "shake" | "flash";
+  type: "zoom" | "shake" | "rotate" | "opacity" | "blur";
+  start: number;     // seconds (start time)
+  duration: number;  // seconds
+  from: number;
+  to: number;
+  easing?: "linear" | "easeOutCubic" | "easeOutExpo" | "smoothstep";
+};
+```
+
+- `from`/`to` semantics:
+  - `zoom`: scale multiplier (e.g. `1.0` → `1.2`)
+  - `shake`: amplitude in pixels
+  - `rotate`: rotation in radians
+  - `opacity`: 0–255 (for `tint()`)
+  - `blur`: pixels (via canvas filter)
+
+### Legacy format (still supported for zoom)
+```ts
+type AnimationEvent = {
+  type: "zoom";
   time: number;
   duration: number;
   strength: number;
 };
+```
+Legacy zoom events continue to work exactly as before (additive pulses). The renderer supports mixing legacy and new events.
+
+Example mixed events (see `public/events.json`):
+```json
+[
+  { "type": "zoom", "time": 0, "duration": 0.5, "strength": 0.08 },
+  { "type": "shake", "start": 2.0, "duration": 0.35, "from": 0, "to": 22, "easing": "easeOutExpo" },
+  { "type": "rotate", "start": 5.5, "duration": 2.0, "from": -0.07, "to": 0.07, "easing": "easeOutCubic" }
+]
 ```
 
 ## Notes

@@ -6,12 +6,20 @@ const isValidAnimationEvent = (value: unknown): value is AnimationEvent => {
   }
 
   const event = value as Partial<AnimationEvent>;
-  return (
-    typeof event.type === "string" &&
-    typeof event.time === "number" &&
-    typeof event.duration === "number" &&
-    typeof event.strength === "number"
-  );
+
+  if (typeof event.type !== "string") return false;
+  if (typeof event.duration !== "number") return false;
+
+  // Support legacy (time + strength) OR new (start + from/to)
+  const hasTime = typeof event.time === "number";
+  const hasStart = typeof event.start === "number";
+  if (!hasTime && !hasStart) return false;
+
+  const hasStrength = typeof event.strength === "number";
+  const hasFromTo = typeof event.from === "number" && typeof event.to === "number";
+  if (!hasStrength && !hasFromTo) return false;
+
+  return true;
 };
 
 export const loadEvents = async (path: string): Promise<AnimationEvent[]> => {

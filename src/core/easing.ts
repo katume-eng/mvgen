@@ -20,3 +20,15 @@ export const smoothstep = (t: number): number => {
   const x = clamp01(t);
   return x * x * (3 - 2 * x);
 };
+
+const easingMap: Record<string, (t: number) => number> = {
+  linear,
+  easeOutCubic,
+  easeOutExpo,
+  smoothstep,
+};
+
+export const getEasingFunction = (name?: string): (t: number) => number => {
+  if (!name) return easeOutExpo;
+  return easingMap[name] ?? easeOutExpo;
+};
